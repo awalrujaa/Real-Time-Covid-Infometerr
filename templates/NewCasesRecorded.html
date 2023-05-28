@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JSON Data Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .container {
+        display: flex;
+      }
+
+      .left-div {
+        flex: 1;
+        background-color: #e0e0e0;
+      }
+
+      .right-div {
+        flex: 1;
+        background-color: #f0f0f0;
+      }
+      .dropbtn {
+        background-color: #04aa6d;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5%;
+      }
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #ddd;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left-div">
+        <canvas id="chart"></canvas>
+      </div>
+      <div class="right-div">
+        <div class="dropdown">
+          <button class="dropbtn">More Info</button>
+          <div class="dropdown-content">
+            <a href="{{url_for('NepalNewDeaths')}}">New Deaths Recorded</a>
+            <a href="{{url_for('home')}}">Back</a>
+            <a href="{{url_for('Credits')}}">Credits</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Fetch the JSON file
+      let fetchRes = fetch(
+        "https://jhucoronavirus.azureedge.net/api/v3/timeseries/global/cases/NP.json"
+      );
+      // fetchRes is the promise to resolve
+      // it by using.then() method
+      fetchRes
+        .then((res) => res.json())
+        .then((jsonData) => {
+          console.log(jsonData);
+          // Extract dates and values
+          var dates = Object.keys(jsonData);
+          console.log(dates);
+          console.log("dates printed");
+          var newCases = dates.map(function (date) {
+            return jsonData[date]["raw_positives"];
+          });
+
+          var ctx = document.getElementById("chart").getContext("2d");
+          var chart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: dates,
+              datasets: [
+                {
+                  label: "New Cases",
+                  data: newCases,
+                  fill: false,
+                  lineTension: 0,
+                  backgroundColor: "rgba(0,0,255,1.0)",
+                  borderColor: "rgba(0,0,255,0.1)",
+                },
+              ],
+            },
+            options: {
+              legend: { display: false },
+            },
+          });
+        });
+    </script>
+  </body>
+</html>

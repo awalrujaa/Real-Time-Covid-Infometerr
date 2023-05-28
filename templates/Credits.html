@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About me</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <style>
+      body {
+        background-color: #cccccc;
+        box-sizing: border-box;
+        font-family: sans-serif;
+      }
+
+      body:hover {
+        animation-name: example;
+        animation-duration: 8s;
+      }
+
+      .container {
+        position: relative;
+        width: 80%;
+        display: flex;
+        align-items: center;
+        margin-top: 15px;
+        padding-left: 5%;
+      }
+
+      .container .contactInfo {
+        padding-left: 5%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .container .contactInfo .box {
+        position: relative;
+        padding: 20px 0px;
+        display: flex;
+      }
+
+      .container .contactInfo .box .icon {
+        min-width: 60px;
+        height: 60px;
+        background: rgb(190, 184, 184);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        font-size: 22px;
+      }
+
+      .container .contactInfo .box .text {
+        display: flex;
+        margin-left: 20px;
+        font-size: 15px;
+        color: #333;
+        flex-direction: column;
+        font-weight: 300;
+      }
+
+      .container .contactInfo .box .text h3 {
+        font-weight: 500;
+      }
+
+      .aboutMePhoto {
+        width: 30%;
+        height: 30%;
+        border-radius: 10%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <img
+        class="aboutMePhoto"
+        src="{{ url_for('static', filename='aboutMePhoto.JPG') }}"
+        alt="Self Portrait"
+      />
+
+      <div class="contactInfo">
+        <p>
+          <b><h4>Credits</h4></b>
+          A fresh Computer Engineering Graduate, highly interested in a career
+          in data engineering.
+
+          <br />Having completed many individual and group projects, possesses a
+          significant ability to work in team environments.
+        </p>
+
+        <div class="box">
+          <div class="icon">
+            <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+          </div>
+          <div class="text">
+            <h3>Pulchowk Campus</h3>
+            <p>
+              Bachelor in Computer Engineering<br />Pulchowk Campus (2018 to
+              Present)
+            </p>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="icon"><i class="fa fa-book" aria-hidden="true"></i></div>
+          <div class="text">
+            <h3>Capital College and Research Center</h3>
+            <p>NEB | A ( 3.48 )</p>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="icon">
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </div>
+          <div class="text">
+            <h3>Himalayan English Secondary School</h3>
+            <p>Nepal Government | A+ ( 3.95 )</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

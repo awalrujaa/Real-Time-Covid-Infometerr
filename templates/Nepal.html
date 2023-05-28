@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JSON Data Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .box {
+        width: 150px;
+        height: 150px;
+        background-color: #ccc;
+        margin: 10px;
+        float: left;
+        border-radius: 5%;
+        padding-inline: 5px;
+      }
+      .container {
+        display: flex;
+      }
+
+      .left-div {
+        flex: 1;
+      }
+
+      .right-div {
+        flex: 1;
+      }
+      .dropbtn {
+        background-color: #04aa6d;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5%;
+      }
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+      }
+
+      .dropdown-content a:hover {
+        background-color: #ddd;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 style="text-align: center; padding: 20px">Nepal Covid Infometer</h1>
+    <div class="container">
+      <div class="left-div">
+        <div id="gif-container">
+          <!-- <img
+            src="{{ url_for('static', filename='MapofNepal.png') }}"
+            alt="Map of Nepal"
+            style="width: 650px"
+          /> -->
+
+          <div class="box" style="background-color: #bec9c5">
+            <b>Total COVID-19 Cases</b>
+            <br />
+            <br /><br />
+            {{NepaltotalCases}}
+          </div>
+          <div class="box" style="background-color: #e41212">
+            <b>Total COVID-19 Deaths</b>
+            <br /><br /><br />
+            {{NepaltotalDeaths}}
+          </div>
+
+          <div class="box" style="background-color: #04aa6d">
+            <b>Total Recovered Nepal</b>
+            <br /><br /><br />
+            {{NepaltotalRecovered}}
+          </div>
+        </div>
+      </div>
+      <div class="right-div">
+        <div class="dropdown">
+          <button class="dropbtn">More Info</button>
+          <div class="dropdown-content">
+            <a href="{{url_for('NepalNewCases')}}">New Cases Recorded</a>
+            <a href="{{url_for('NepalNewDeaths')}}">New Deaths Recorded</a>
+            <a href="{{url_for('home')}}">Back</a>
+            <a href="{{url_for('Credits')}}">Credits</a>
+          </div>
+        </div>
+
+        <div id="gif-container">
+          <img
+            src="{{ url_for('static', filename='ThirdGif.gif') }}"
+            alt="ImageCorona"
+          />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Fetch the JSON file
+      let fetchRes = fetch(
+        "https://jhucoronavirus.azureedge.net/api/v3/timeseries/global/cases/NP.json"
+      );
+      // fetchRes is the promise to resolve
+      // it by using.then() method
+      fetchRes
+        .then((res) => res.json())
+        .then((jsonData) => {
+          console.log(jsonData);
+          // Extract dates and values
+          var dates = Object.keys(jsonData);
+          console.log(dates);
+          console.log("dates printed");
+          var newCases = dates.map(function (date) {
+            return jsonData[date]["raw_positives"];
+          });
+
+          var ctx = document.getElementById("chart").getContext("2d");
+          var chart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: dates,
+              datasets: [
+                {
+                  label: "New Cases",
+                  data: newCases,
+                  fill: false,
+                  lineTension: 0,
+                  backgroundColor: "rgba(0,0,255,1.0)",
+                  borderColor: "rgba(0,0,255,0.1)",
+                },
+              ],
+            },
+            options: {
+              legend: { display: false },
+            },
+          });
+          // Create the chart
+          // var ctx = document.getElementById("chart").getContext("2d");
+          // var chart = new Chart(ctx, {
+          //     type: "line",
+          //     data: {
+          //       labels: dates,
+          //       datasets: [
+          //         {
+          // label: "New Cases",
+          // data: newCases,
+          // borderColor: "blue",
+          // fill: false,
+          //         },
+          //         // {
+          //         //   label: "7-day Average",
+          //         //   data: sevenDayAvg,
+          //         //   borderColor: "green",
+          //         //   fill: false,
+          //         // },
+          //       ],
+          //     },
+          //     options: {
+          //       title: {
+          //         display: true,
+          //         text: "JSON Data Visualization",
+          //       },
+          //     },
+          //   });
+        });
+    </script>
+  </body>
+</html>
